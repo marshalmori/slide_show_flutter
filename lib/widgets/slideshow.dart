@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_show/models/slider_model.dart';
 
 class Slideshow extends StatelessWidget {
+  final List<Widget> slides;
+
+  Slideshow({@required this.slides});
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -11,7 +14,7 @@ class Slideshow extends StatelessWidget {
       child: Center(
         child: Column(
           children: [
-            Expanded(child: _Slides()),
+            Expanded(child: _Slides(this.slides)),
             _Dots(),
           ],
         ),
@@ -66,6 +69,10 @@ class _Dot extends StatelessWidget {
 }
 
 class _Slides extends StatefulWidget {
+  final List<Widget> slides;
+
+  _Slides(this.slides);
+
   @override
   __SlidesState createState() => __SlidesState();
 }
@@ -77,8 +84,6 @@ class __SlidesState extends State<_Slides> {
   void initState() {
     super.initState();
     pageViewController.addListener(() {
-      print('Página atual: ${pageViewController.page}');
-
       Provider.of<SliderModel>(context, listen: false).currentPage =
           pageViewController.page;
     });
@@ -95,22 +100,16 @@ class __SlidesState extends State<_Slides> {
     return Container(
       child: PageView(
         controller: pageViewController,
-        children: [
-          _Slide('assets/svgs/1.svg'),
-          _Slide('assets/svgs/2.svg'),
-          _Slide('assets/svgs/3.svg'),
-          _Slide('assets/svgs/4.svg'),
-          _Slide('assets/svgs/5.svg'),
-        ],
+        children: widget.slides.map((slide) => _Slide(slide)).toList(),
       ),
     );
   }
 }
 
 class _Slide extends StatelessWidget {
-  final String svg;
+  final Widget slide;
 
-  _Slide(this.svg);
+  _Slide(this.slide);
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +117,7 @@ class _Slide extends StatelessWidget {
       width: double.infinity,
       height: double.infinity,
       padding: EdgeInsets.all(20),
-      child: SvgPicture.asset(svg),
+      child: slide,
     );
   }
 }
