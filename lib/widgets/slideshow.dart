@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_show/models/slider_model.dart';
 
-class SlideShowPage extends StatelessWidget {
+class Slideshow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SliderModel(),
-      child: Scaffold(
-        body: Center(
-          child: Column(
-            children: [
-              Expanded(
-                child: _Slides(),
-              ),
-              _Dots(),
-            ],
-          ),
+      create: (_) => new SliderModel(),
+      child: Center(
+        child: Column(
+          children: [
+            Expanded(child: _Slides()),
+            _Dots(),
+          ],
         ),
       ),
     );
