@@ -6,7 +6,50 @@ class SlideShowPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: _Slides(),
+        child: Column(
+          children: [
+            Expanded(
+              child: _Slides(),
+            ),
+            _Dots(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Dots extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 70,
+      //color: Colors.red,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _Dot(),
+          _Dot(),
+          _Dot(),
+          _Dot(),
+          _Dot(),
+        ],
+      ),
+    );
+  }
+}
+
+class _Dot extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 10,
+      height: 10,
+      margin: EdgeInsets.symmetric(horizontal: 5),
+      decoration: BoxDecoration(
+        color: Colors.black,
+        shape: BoxShape.circle,
       ),
     );
   }
