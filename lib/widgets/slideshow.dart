@@ -4,11 +4,15 @@ import 'package:slide_show/models/slider_model.dart';
 
 class Slideshow extends StatelessWidget {
   final List<Widget> slides;
-  final bool points_above;
+  final bool pointsAbove;
+  final Color primaryColorDots;
+  final Color secundaryColorDots;
 
   Slideshow({
     @required this.slides,
-    this.points_above = false,
+    this.pointsAbove = false,
+    this.primaryColorDots = Colors.pink,
+    this.secundaryColorDots = Colors.grey,
   });
 
   @override
@@ -19,9 +23,13 @@ class Slideshow extends StatelessWidget {
         child: Center(
           child: Column(
             children: [
-              if (this.points_above) _Dots(this.slides.length),
+              if (this.pointsAbove)
+                _Dots(this.slides.length, this.primaryColorDots,
+                    this.secundaryColorDots),
               Expanded(child: _Slides(this.slides)),
-              if (!this.points_above) _Dots(this.slides.length),
+              if (!this.pointsAbove)
+                _Dots(this.slides.length, this.primaryColorDots,
+                    this.secundaryColorDots),
             ],
           ),
         ),
@@ -32,8 +40,14 @@ class Slideshow extends StatelessWidget {
 
 class _Dots extends StatelessWidget {
   final int totalSlides;
+  final Color primaryColorDots;
+  final Color secundaryColorDots;
 
-  _Dots(this.totalSlides);
+  _Dots(
+    this.totalSlides,
+    this.primaryColorDots,
+    this.secundaryColorDots,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +57,13 @@ class _Dots extends StatelessWidget {
       //color: Colors.red,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: List.generate(this.totalSlides, (i) => _Dot(i)),
+        children: List.generate(
+            this.totalSlides,
+            (i) => _Dot(
+                  i,
+                  this.primaryColorDots,
+                  this.secundaryColorDots,
+                )),
       ),
     );
   }
@@ -51,8 +71,14 @@ class _Dots extends StatelessWidget {
 
 class _Dot extends StatelessWidget {
   final int index;
+  final Color primaryColorDots;
+  final Color secundaryColorDots;
 
-  _Dot(this.index);
+  _Dot(
+    this.index,
+    this.primaryColorDots,
+    this.secundaryColorDots,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +91,8 @@ class _Dot extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
         color: (pageViewIndex >= index - 0.5 && pageViewIndex < index + 0.5)
-            ? Colors.pink
-            : Colors.blueGrey,
+            ? secundaryColorDots
+            : primaryColorDots,
         shape: BoxShape.circle,
       ),
     );
