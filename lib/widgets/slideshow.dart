@@ -4,19 +4,26 @@ import 'package:slide_show/models/slider_model.dart';
 
 class Slideshow extends StatelessWidget {
   final List<Widget> slides;
+  final bool points_above;
 
-  Slideshow({@required this.slides});
+  Slideshow({
+    @required this.slides,
+    this.points_above = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => new SliderModel(),
-      child: Center(
-        child: Column(
-          children: [
-            Expanded(child: _Slides(this.slides)),
-            _Dots(this.slides.length),
-          ],
+      child: SafeArea(
+        child: Center(
+          child: Column(
+            children: [
+              if (this.points_above) _Dots(this.slides.length),
+              Expanded(child: _Slides(this.slides)),
+              if (!this.points_above) _Dots(this.slides.length),
+            ],
+          ),
         ),
       ),
     );
