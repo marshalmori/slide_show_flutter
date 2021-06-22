@@ -7,9 +7,9 @@ class SlideshowPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Slideshow(
-        pointsAbove: true,
-        primaryColorDots: Colors.black,
-        secundaryColorDots: Colors.red,
+        pointsAbove: false,
+        primaryColorDots: Colors.purple.shade900,
+        secundaryColorDots: Colors.grey,
         slides: [
           SvgPicture.asset('assets/svgs/1.svg'),
           SvgPicture.asset('assets/svgs/2.svg'),
