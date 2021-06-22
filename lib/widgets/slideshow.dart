@@ -6,12 +6,16 @@ class Slideshow extends StatelessWidget {
   final bool pointsAbove;
   final Color primaryColorDots;
   final Color secundaryColorDots;
+  final double primaryDotSize;
+  final double secundaryDotSize;
 
   Slideshow({
     @required this.slides,
     this.pointsAbove = false,
     this.primaryColorDots = Colors.pink,
     this.secundaryColorDots = Colors.grey,
+    this.primaryDotSize = 12,
+    this.secundaryDotSize = 12,
   });
 
   @override
@@ -26,6 +30,10 @@ class Slideshow extends StatelessWidget {
                   this.primaryColorDots;
               Provider.of<_SlideshowModel>(context).secundaryColor =
                   this.secundaryColorDots;
+              Provider.of<_SlideshowModel>(context).primaryDotSize =
+                  this.primaryDotSize;
+              Provider.of<_SlideshowModel>(context).secundaryDotSize =
+                  this.secundaryDotSize;
 
               return _CreateSlideshowStructure(
                   pointsAbove: pointsAbove, slides: slides);
@@ -39,10 +47,9 @@ class Slideshow extends StatelessWidget {
 
 class _CreateSlideshowStructure extends StatelessWidget {
   const _CreateSlideshowStructure({
-    Key key,
     @required this.pointsAbove,
     @required this.slides,
-  }) : super(key: key);
+  });
 
   final bool pointsAbove;
   final List<Widget> slides;
@@ -87,19 +94,26 @@ class _Dot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final pageViewIndex = Provider.of<_SlideshowModel>(context).currentPage;
     final slideshowModel = Provider.of<_SlideshowModel>(context);
+    double size;
+    Color color;
+
+    if (slideshowModel.currentPage >= index - 0.5 &&
+        slideshowModel.currentPage < index + 0.5) {
+      size = slideshowModel.primaryDotSize;
+      color = slideshowModel.primaryColor;
+    } else {
+      size = slideshowModel.secundaryDotSize;
+      color = slideshowModel.secundaryColor;
+    }
 
     return AnimatedContainer(
       duration: Duration(milliseconds: 200),
-      width: 10,
-      height: 10,
+      width: size,
+      height: size,
       margin: EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
-        color: (slideshowModel.currentPage >= index - 0.5 &&
-                slideshowModel.currentPage < index + 0.5)
-            ? slideshowModel.primaryColor
-            : slideshowModel.secundaryColor,
+        color: color,
         shape: BoxShape.circle,
       ),
     );
@@ -164,6 +178,8 @@ class _SlideshowModel with ChangeNotifier {
   double _currentPage = 0;
   Color _primaryColor = Colors.pink;
   Color _secundaryColor = Colors.grey;
+  double _primaryDotSize = 12;
+  double _secundaryDotSize = 12;
 
   double get currentPage => this._currentPage;
 
@@ -182,5 +198,17 @@ class _SlideshowModel with ChangeNotifier {
 
   set secundaryColor(Color color) {
     this._secundaryColor = color;
+  }
+
+  double get primaryDotSize => this._primaryDotSize;
+
+  set primaryDotSize(double size) {
+    this._primaryDotSize = size;
+  }
+
+  double get secundaryDotSize => this._secundaryDotSize;
+
+  set secundaryDotSize(double size) {
+    this._secundaryDotSize = size;
   }
 }
